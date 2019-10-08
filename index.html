@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mass Lottery</title>
+</head>
+<body>
+	<script language="javascript">
+		var nums = generate();
+		function generate(nums, luckySet) {
+			nums = new Array(6);
+			var existSet = new Set();
+			for (i = 0; i < 5; i++) {
+				nums[i] = Math.ceil(Math.random() * 47 + 1);
+				while (existSet.has(nums[i])) {
+					nums[i] = Math.ceil(Math.random() * 47 + 1);
+				}
+				existSet.add(nums[i]);
+			}
+
+			luckyNum = Math.ceil(Math.random() * 17 + 1);
+			document.write("<h2> Unsorted Elements: \n");
+			displayNumber(nums, luckyNum);
+			nums = nums.sort(sortNumber);
+			document.write("<br> Sorted Elements: ");
+			displayNumber(nums, luckyNum);
+			document.write("</h2>");
+			luckySet = new Set(nums);
+			nums[5] = luckyNum;
+			console.log(luckySet);
+			return nums;
+		}
+
+		function displayNumber(nums, luckyNum) {
+			var numLength = nums.length - 1;
+			for (i = 0; i < numLength; i++) {
+				document.write(nums[i] + ", ");
+			}
+			document.write(luckyNum.toString().fontcolor("#FF0000"));
+		}
+
+		function sortNumber(a, b) {
+			return a - b;
+		}
+
+		function record() {
+			// var inputArray;
+			var fiveGuess = document.getElementById('input').value;
+			var luckyGuess = document.getElementById('input1').value;
+			fiveGuess = fiveGuess.split(' ');
+			console.log(fiveGuess);
+			if (fiveGuess.length != 5) {
+				alert("Enter 5 numbers!");
+				return;
+			}
+			if (luckyGuess == " ") {
+				alert("Enter your guess for Lucky Number!");
+				return;
+			}
+			fiveGuess[5] = luckyGuess;
+			console.log(fiveGuess);
+			document.write("<h2> Winning Numbers: ");
+			displayNumber(nums, nums[5]);
+			document.write("<br>");
+			document.write("Your Picks: ");
+			displayNumber(fiveGuess, luckyGuess);
+			document.write("</h2>");
+			var luckySet;
+			luckySet = new Set(nums);
+			var count = 0;
+			console.log(luckySet);
+			for (i = 0; i < 5; i++) {
+				console.log(parseInt(fiveGuess[i], 10));
+				if(luckySet.has(parseInt(fiveGuess[i]))) {
+					count++;
+				}
+			}
+			console.log(count);
+			document.write("<h2>");
+			switch(count) {
+				case 0:
+				console.log(luckyGuess == luckyNum);
+				luckyGuess == luckyNum ? document.write("You Get $4") : document.write("Nothing");
+				break;
+				case 1:
+				luckyGuess == luckyNum ? document.write("You Get $6") : document.write("Nothing");
+				break;
+				case 2:
+				luckyGuess == luckyNum ? document.write("You Get $25") : document.write("You Get $3");
+				break;
+				case 3:
+				luckyGuess == luckyNum ? document.write("You Get $150") : document.write("You Get $20");
+				break;
+				case 4:
+				luckyGuess == luckyNum ? document.write("You Get $5000") : document.write("You Get $200");
+				break;
+				case 5:
+				luckyGuess == luckyNum ? document.write("$7,000 a WEEK for LIFE!") : document.write("$25,000 a YEAR for LIFE!");
+				break;
+			}
+			document.write("</h2>");
+			var button = document.createElement("button");
+			var t = document.createTextNode("Try Again");
+			button.appendChild(t);
+			button.setAttribute("onclick", "location.reload()");
+			var body = document.getElementsByTagName("body")[0];
+			body.appendChild(button);
+		}
+
+	</script>
+
+	<h2> Enter Your Picks: 
+		<input type="text" id="input" size="10"/> + 
+		<input type= "text" id="input1" size="1"/>
+		<button onclick="record()">Sumbit</button>
+		<button onclick="location.reload();">Try Again</button>
+
+	</h2>
+	
+</body>
+</html>
